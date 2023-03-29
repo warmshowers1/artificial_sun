@@ -43,14 +43,23 @@ void loop() {
 
   if(sec >= 0 && sec < 15){
     Serial.println(0);
+    analogWrite(3, 0);
   }
-  else if(sec >= 15 && sec){
-    Serial.println(map(sec, 0, 59, 0, 255));
+  else if(sec >= 15 && sec < 30){
+    int output = map(sec, 15, 30, 0, 255);
+    Serial.println(output);
+    analogWrite(3, output);
+  }
+  else if(sec >= 30 && sec < 45){
+    Serial.println(255);
+    analogWrite(3, 255);
   }
   else{
-    Serial.println(127);
+    int output = map(sec, 45, 60, 255, 0);
+    Serial.println(output);
+    analogWrite(3, output);
   }
 
-  Serial.println(now.timestamp());
+  // Serial.println(now.timestamp());
   delay(1000);
 }
