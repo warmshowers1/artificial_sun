@@ -1,5 +1,6 @@
 #include <Wire.h>
 #include <RTClib.h>
+#include "Timestamp.h"
 
 RTC_DS1307 RTC;
 
@@ -17,57 +18,6 @@ const char alarmMinute = 30; // Wake up minute
 
 uint32_t now, alarmTime = (uint32_t(alarmHour)*60*60) + (alarmMinute*60);
 uint32_t alarmTimePlusPeriod = alarmTime + (alarmPeriod*60);
-
-class Timestamp{
-    private:
-        char hour;
-        char minute;
-        uint32_t day_seconds; // Seconds in the day, should max out at 86399
-
-    public:
-        // Constructors
-        Timestamp(char hour){
-            this->hour = hour;
-            this->minute = 0;
-            this->day_seconds = (uint32_t(this->hour)*60*60) + (this->minute*60);
-        }
-        Timestamp(char hour, char minute){
-            this->hour = hour;
-            this->minute = minute;
-            this->day_seconds = (uint32_t(this->hour)*60*60) + (this->minute*60);
-        }
-        Timestamp(uint32_t seconds){
-            this->hour = char((seconds/60)/60);
-            this->minute = (seconds - (this->hour*60*60))/60;
-            this->day_seconds = seconds;
-        }
-        // Getters
-        char getHour(){
-            return this->hour;
-        }
-        char getMinute(){
-            return this->minute;
-        }
-        uint32_t getDaySeconds(){
-            return this->day_seconds;
-        }
-        // Operators
-        bool operator==(Timestamp right){
-            return day_seconds == right.getDaySeconds();
-        }
-        bool operator>(Timestamp right){
-            return day_seconds > right.getDaySeconds();
-        }
-        bool operator<(Timestamp right){
-            return day_seconds < right.getDaySeconds();
-        }
-        bool operator>=(Timestamp right){
-            return day_seconds >= right.getDaySeconds();
-        }
-        bool operator<=(Timestamp right){
-            return day_seconds <= right.getDaySeconds();
-        }
-};
 
 void setup() {
     Serial.begin(9600);
@@ -112,6 +62,7 @@ void loop() {
         Serial.println(alarmTimePlusPeriod);
         Serial.println(now);
         Serial.println(pinOut);
+        Serial.println("-----------------------");
     }
     
 	delay(1000);
